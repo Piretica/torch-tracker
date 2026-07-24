@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Virtual Punch Card</title>
+
+    <style>
+        /* Centers the card on the page */
+        body {
+            margin: 0;
+            padding: 30px;
+            background: #222;
+            display: flex;
+            justify-content: center;
+        }
+
+        /*
+         * This container holds the card image and all six buttons.
+         * Its maximum size matches the original 1450px-wide image.
+         */
+        .punch-card {
+            position: relative;
+            width: 100%;
+            max-width: 1450px;
+        }
+
+        /* Your complete Photoshop card */
+        .card-image {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        /*
+         * General styling for all six buttons.
+         *
+         * Original button size:
+         * 140px wide × 158px tall
+         *
+         * Converted relative to the 1450 × 720 image.
+         */
+        .punch {
+            position: absolute;
+            width: 9.655%;
+            height: 21.944%;
+
+            padding: 0;
+            border: 0;
+            border-radius: 50%;
+            background: transparent;
+            cursor: pointer;
+        }
+
+        /*
+         * The filled image is hidden until its button is clicked.
+         */
+        .punch img {
+            display: none;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            pointer-events: none;
+        }
+
+        /* Show the filled image after clicking */
+        .punch.filled img {
+            display: block;
+        }
+
+        /* Button positions based on the Photoshop coordinates */
+
+        .punch-1 {
+            left: 18.621%;
+            top: 34.028%;
+        }
+
+        .punch-2 {
+            left: 31.655%;
+            top: 34.028%;
+        }
+
+        .punch-3 {
+            left: 44.690%;
+            top: 34.028%;
+        }
+
+        .punch-4 {
+            left: 57.655%;
+            top: 34.306%;
+        }
+
+        .punch-5 {
+            left: 70.621%;
+            top: 34.306%;
+        }
+
+        .punch-6 {
+            left: 83.586%;
+            top: 34.306%;
+        }
+
+        /*
+         * Temporarily remove the comment marks below to see
+         * the clickable areas while testing.
+         */
+
+        /*
+        .punch {
+            outline: 2px solid red;
+            background: rgba(255, 0, 0, 0.25);
+        }
+        */
+    </style>
+</head>
+
+<body>
+
+    <div class="punch-card">
+
+        <!-- Your complete Photoshop punch-card image -->
+        <img
+            src="TorchTracker.png"
+            class="card-image"
+            alt="Virtual punch card"
+        >
+
+        <!-- Button 1 -->
+        <button
+            type="button"
+            class="punch punch-1"
+            aria-label="Punch one"
+            aria-pressed="false"
+        >
+            <img src="filled.png" alt="">
+        </button>
+
+        <!-- Button 2 -->
+        <button
+            type="button"
+            class="punch punch-2"
+            aria-label="Punch two"
+            aria-pressed="false"
+        >
+            <img src="filled.png" alt="">
+        </button>
+
+        <!-- Button 3 -->
+        <button
+            type="button"
+            class="punch punch-3"
+            aria-label="Punch three"
+            aria-pressed="false"
+        >
+            <img src="filled.png" alt="">
+        </button>
+
+        <!-- Button 4 -->
+        <button
+            type="button"
+            class="punch punch-4"
+            aria-label="Punch four"
+            aria-pressed="false"
+        >
+            <img src="filled.png" alt="">
+        </button>
+
+        <!-- Button 5 -->
+        <button
+            type="button"
+            class="punch punch-5"
+            aria-label="Punch five"
+            aria-pressed="false"
+        >
+            <img src="filled.png" alt="">
+        </button>
+
+        <!-- Button 6 -->
+        <button
+            type="button"
+            class="punch punch-6"
+            aria-label="Punch six"
+            aria-pressed="false"
+        >
+            <img src="filled.png" alt="">
+        </button>
+
+    </div>
+
+    <script>
+        const punches = document.querySelectorAll(".punch");
+
+        punches.forEach((punch, index) => {
+            const storageKey = `virtual-punch-card-${index + 1}`;
+
+            /* Restore saved punch state */
+            if (localStorage.getItem(storageKey) === "filled") {
+                punch.classList.add("filled");
+                punch.setAttribute("aria-pressed", "true");
+            }
+
+            /* Toggle punch when clicked */
+            punch.addEventListener("click", () => {
+                punch.classList.toggle("filled");
+
+                const isFilled = punch.classList.contains("filled");
+
+                punch.setAttribute(
+                    "aria-pressed",
+                    isFilled ? "true" : "false"
+                );
+
+                if (isFilled) {
+                    localStorage.setItem(storageKey, "filled");
+                } else {
+                    localStorage.removeItem(storageKey);
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
